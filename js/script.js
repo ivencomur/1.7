@@ -1,7 +1,7 @@
 // Pokémon repository:
 const pokemonRepository = (function () {
   const pokemonList = []; // Empty array
-  const apiUrl = “https://pokeapi.co/api/v2/pokemon/?limit=350”;
+  const apiUrl = "https://pokeapi.co/api/v2/pokemon/?limit=350";
 
   function add(pokemon) {
     pokemonList.push(pokemon);
@@ -46,12 +46,12 @@ const pokemonRepository = (function () {
 
 // Functions for listing items:
 function addListItem(pokemon) {
-  const pokemonList = document.querySelector(“.pokemon-list”);
-  const listItem = document.createElement(“li”);
-  const button = document.createElement(“button”);
+  const pokemonList = document.querySelector(".pokemon-list");
+  const listItem = document.createElement("li");
+  const button = document.createElement("button");
   button.innerText = pokemon.name;
-  button.classList.add(“pokemon-button”);
-  button.addEventListener(“click”, () => {
+  button.classList.add("pokemon-button");
+  button.addEventListener("click", () => {
     showDetails(pokemon);
   });
   listItem.appendChild(button);
@@ -63,7 +63,7 @@ function showDetails(pokemon) {
   pokemonRepository.loadDetails(pokemon).then(() => {
     console.log(`Name: ${pokemon.name}`);
     console.log(`Height: ${pokemon.height}`);
-    console.log(`Types: ${pokemon.types.join(“, “)}`);
+    console.log(`Types: ${pokemon.types.join(", ")}`);
   });
 }
 
