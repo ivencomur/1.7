@@ -1,9 +1,9 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
+  typeof exports === "object" && typeof module !== "undefined" ? factory() :
+  typeof define === "function" && define.amd ? define(factory) :
   factory();
 }(this, (function () {
-  'use strict';
+  "use strict";
 
   /**
    * @this {Promise}
@@ -28,11 +28,11 @@
     var P = this;
     return new P(function (resolve, reject) {
       if (!Array.isArray(arr)) {
-        return reject(new TypeError(arr + ' is not iterable'));
+        return reject(new TypeError(arr + " is not iterable"));
       }
 
       var results = arr.map(function () {
-        return { status: 'pending' };
+        return { status: "pending" };
       });
 
       if (arr.length === 0) return resolve([]);
@@ -48,19 +48,19 @@
       arr.forEach(function (promise, index) {
         P.resolve(promise)
           .then(function (value) {
-            processResult(index, { status: 'fulfilled', value });
+            processResult(index, { status: "fulfilled", value });
           })
           .catch(function (reason) {
-            processResult(index, { status: 'rejected', reason });
+            processResult(index, { status: "rejected", reason });
           });
       });
     });
   }
 
   function AggregateError(errors, message) {
-    this.name = 'AggregateError';
+    this.name = "AggregateError";
     this.errors = errors;
-    this.message = message || '';
+    this.message = message || "";
   }
   AggregateError.prototype = Object.create(Error.prototype);
 
@@ -68,13 +68,13 @@
     var P = this;
     return new P(function (resolve, reject) {
       if (!Array.isArray(arr)) {
-        return reject(new TypeError('Promise.any accepts an array'));
+        return reject(new TypeError("Promise.any accepts an array"));
       }
 
       var errors = [];
       var remaining = arr.length;
       if (remaining === 0) {
-        return reject(new AggregateError([], 'All promises were rejected'));
+        return reject(new AggregateError([], "All promises were rejected"));
       }
 
       arr.forEach(function (promise) {
@@ -83,7 +83,7 @@
           .catch(function (error) {
             errors.push(error);
             if (errors.length === remaining) {
-              reject(new AggregateError(errors, 'All promises were rejected'));
+              reject(new AggregateError(errors, "All promises were rejected"));
             }
           });
       });
@@ -92,10 +92,10 @@
 
   function Promise(fn) {
     if (!(this instanceof Promise)) {
-      throw new TypeError('Promises must be constructed via new');
+      throw new TypeError("Promises must be constructed via new");
     }
-    if (typeof fn !== 'function') {
-      throw new TypeError('Promise constructor requires a function argument');
+    if (typeof fn !== "function") {
+      throw new TypeError("Promise constructor requires a function argument");
     }
 
     this._state = 0;
@@ -114,10 +114,10 @@
     if (self._state !== 0) return;
 
     if (value === self) {
-      return reject(self, new TypeError('A promise cannot be resolved with itself.'));
+      return reject(self, new TypeError("A promise cannot be resolved with itself."));
     }
 
-    if (value && (typeof value === 'object' || typeof value === 'function')) {
+    if (value && (typeof value === "object" || typeof value === "function")) {
       var then;
       try {
         then = value.then;
@@ -125,7 +125,7 @@
         return reject(self, ex);
       }
 
-      if (typeof then === 'function') {
+      if (typeof then === "function") {
         return then.call(
           value,
           resolve.bind(null, self),
@@ -188,8 +188,8 @@
     var prom = new Promise(function () {});
 
     handle(this, {
-      onFulfilled: typeof onFulfilled === 'function' ? onFulfilled : null,
-      onRejected: typeof onRejected === 'function' ? onRejected : null,
+      onFulfilled: typeof onFulfilled === "function" ? onFulfilled : null,
+      onRejected: typeof onRejected === "function" ? onRejected : null,
       promise: prom,
     });
 
@@ -217,7 +217,7 @@
   Promise.all = function (arr) {
     return new Promise(function (resolve, reject) {
       if (!Array.isArray(arr)) {
-        return reject(new TypeError('Promise.all accepts an array'));
+        return reject(new TypeError("Promise.all accepts an array"));
       }
 
       var results = new Array(arr.length);
@@ -243,7 +243,7 @@
   Promise.race = function (arr) {
     return new Promise(function (resolve, reject) {
       if (!Array.isArray(arr)) {
-        return reject(new TypeError('Promise.race accepts an array'));
+        return reject(new TypeError("Promise.race accepts an array"));
       }
 
       arr.forEach(function (promise) {
@@ -256,7 +256,7 @@
   Promise.any = any;
 
   Promise._immediateFn =
-    typeof setImmediate === 'function'
+    typeof setImmediate === "function"
       ? function (fn) {
           setImmediate(fn);
         }
@@ -265,25 +265,25 @@
         };
 
   Promise._unhandledRejectionFn = function (err) {
-    if (typeof console !== 'undefined' && console) {
-      console.warn('Possible Unhandled Promise Rejection:', err);
+    if (typeof console !== "undefined" && console) {
+      console.warn("Possible Unhandled Promise Rejection:", err);
     }
   };
 
   var globalNS = (function () {
-    if (typeof self !== 'undefined') {
+    if (typeof self !== "undefined") {
       return self;
     }
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return window;
     }
-    if (typeof global !== 'undefined') {
+    if (typeof global !== "undefined") {
       return global;
     }
-    throw new Error('unable to locate global object');
+    throw new Error("unable to locate global object");
   })();
 
-  if (typeof globalNS.Promise !== 'function') {
+  if (typeof globalNS.Promise !== "function") {
     globalNS.Promise = Promise;
   } else {
     if (!globalNS.Promise.prototype.finally) {
