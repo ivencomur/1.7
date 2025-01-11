@@ -123,14 +123,7 @@ header {
         font-size: 0.9rem;
     }
 }
-.pokemon-button {
-    margin: 5px;
-    padding: 10px;
-    background-color: lightblue;
-    border: 1px solid blue;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+
   .pokemon-list {
     list-style: none;
     padding: 0;
